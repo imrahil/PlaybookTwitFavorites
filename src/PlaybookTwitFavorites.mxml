@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
+                            creationComplete="creationCompleteHandler(event)">
+
+
+    <fx:Script>
+        <![CDATA[
+        import com.destroytoday.twitteraspirin.vo.OAuthTokenVO;
+        import com.destroytoday.twitteraspirin.vo.StatusVO;
+        import com.destroytoday.twitteraspirin.vo.UserVO;
+
+        import mx.events.FlexEvent;
+
+        import net.digitalprimates.collections.VectorListCollection;
+
+        private var twitterService:TwitterService;
+
+        protected function creationCompleteHandler(event:FlexEvent):void
+        {
+            initTwitterService();
+        }
+
+        private function initTwitterService():void
+        {
+            twitterService = new TwitterService();
+
+            twitterService.consumerKey = "LLYKzha5RemTVqxVXXAtQ";
+            twitterService.consumerSecret = "2EGbBn5mNcITqw5sr6yzHPZH8X1yBQacqxfeAkklO3E";
+            twitterService.applicationName = "PlaybookTwitFavorites";
+
+            twitterService.failure.add(onTwitterError);
+            twitterService.loginURLReady.add(initStageView);
+            twitterService.accessTokenReceived.add(onAccessTokenReceived);
+            twitterService.verifyOAuthAccessTokenSuccess.add(onVerifyOAuthAccessTokenSuccess);
+            twitterService.favoritesTweets.add(onFavoritesTweets);
+
+            twitterService.init();
+
+            var so:SharedObject = SharedObject.getLocal("playbookTwitFavorites");
+
+            var token:Object = so.data["accessToken"];
+
+            // user has already an AccessToken
+            if (token != null)
+            {
+                twitterService.reqVO = new OAuthTokenVO(token.key, token.secret);
+                verifyAccessToken();
+
+                // user is not authenticated yet
+            }
+            else
+            {
+                twitterService.start();
+            }
+        }
+
+        private function onTwitterError(errMessage:*):void
+        {
+            trace("onTwitterError: " + errMessage);
+        }
+
+        public function initStageView():void
+        {
+            navigator.pushView(BrowserView, twitterService.loginURL);
+        }
+
+        public function authorizeAccessToken(pin:String):void
+        {
+            twitterService.getAccessToken(pin);
+        }
+
+        private function onAccessTokenReceived():void
+        {
+            verifyAccessToken();
+        }
+
+        private function verifyAccessToken():void
+        {
+            twitterService.verifyOAuthAccessToken();
+        }
+
+        private function onVerifyOAuthAccessTokenSuccess(user:UserVO):void
+        {
+            var so:SharedObject = SharedObject.getLocal("playbookTwitFavorites");
+            so.data["accessToken"] = twitterService.reqVO;
+            so.flush();
+
+            twitterService.getFavorites();
+        }
+
+        private function onFavoritesTweets(favoritesTimeline:Vector.<StatusVO>):void
+        {
+            navigator.popAll();
+
+            var favorites:VectorListCollection = new VectorListCollection(favoritesTimeline);
+            navigator.pushView(FavoritesView, favorites);
+        }
+
+        public function logoutClickHandler():void
+        {
+            trace('SharedObject deleted!');
+            var so:SharedObject = SharedObject.getLocal("playbookTwitFavorites");
+            so.data["accessToken"] = null;
+            so.flush();
+            
+            navigator.popAll();
+
+            initTwitterService();
+        }
+        ]]>
+    </fx:Script>
+
+</s:ViewNavigatorApplication>

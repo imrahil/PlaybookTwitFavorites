@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" xmlns:local="*"
+        title="Login to Twitter"
+        viewActivate="viewActivateHandler(event)">
+
+    <s:layout>
+        <s:VerticalLayout />
+    </s:layout>
+
+    <fx:Script>
+        <![CDATA[
+        import mx.core.FlexGlobals;
+
+        import spark.events.ViewNavigatorEvent;
+
+        private var loginURL:String;
+
+        override public function set data(value:Object):void
+        {
+            super.data = value;
+
+            loginURL = value as String;
+        }
+
+        private function viewActivateHandler(event:ViewNavigatorEvent):void
+        {
+            stageWebViewContainer.load(loginURL);
+        }
+
+        private function button1_clickHandler(event:MouseEvent):void
+        {
+            if (pinTxt.text != "")
+            {
+                sendPin();
+            }
+        }
+
+        private function pinTxt_keyDownHandler(event:KeyboardEvent):void
+        {
+            if (pinTxt.text != "" && event.charCode == 13)
+            {
+                sendPin();
+            }
+        }
+
+        private function sendPin():void
+        {
+            (FlexGlobals.topLevelApplication as PlaybookTwitFavorites).authorizeAccessToken(pinTxt.text);
+        }
+        ]]>
+    </fx:Script>
+    <s:titleContent>
+        <s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle">
+            <s:Label text="My PIN:" color="#FFFFFF" />
+            <s:TextInput id="pinTxt" restrict="0-9" keyDown="pinTxt_keyDownHandler(event)" />
+            <s:Button label="Send" click="button1_clickHandler(event)" />
+        </s:HGroup>
+    </s:titleContent>
+
+    <local:WebView id="stageWebViewContainer" width="100%" height="100%" />
+</s:View>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<application xmlns="http://ns.adobe.com/air/application/3.1">
+	<id>com.imrahil.bbapps.PlaybookTwitFavorites</id>
+	<filename>PlaybookTwitFavorites</filename>
+	<name>Playbook Twitter Favorites</name>
+	<versionNumber>0.1</versionNumber>
+    <copyright>Copyright © 2012 Jarek Szczepanski</copyright>
+
+		         
+    <initialWindow>
+        <content>PlaybookTwitFavorites.swf</content>
+        <aspectRatio>landscape</aspectRatio>
+        <autoOrients>true</autoOrients>
+        <fullScreen>false</fullScreen>
+        <visible>true</visible>
+        <softKeyboardBehavior>none</softKeyboardBehavior>
+    </initialWindow>
+</application>

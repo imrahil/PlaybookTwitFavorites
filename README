@@ -1,0 +1,11 @@
+Twitter Favorites for Blackberry Playbook
+
+Simple Adobe Flex app to browse your favorites on Twitter and check URLs in awesome Playbook's browser.
+
+Requirements:
+- as3-signals - https://github.com/robertpenner/as3-signals
+- DestroyFramework - https://github.com/imrahil/DestroyFramework
+- TwitterAspirin - https://github.com/imrahil/TwitterAspirin
+- oauth-as3 - http://code.google.com/p/oauth-as3/
+
+Uses VectorCollection from DigitalPrimates - http://www.digitalprimates.net/author/codeslinger/2010/05/18/vectorcollection/
