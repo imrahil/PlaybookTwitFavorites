@@ -2,8 +2,8 @@
 <application xmlns="http://ns.adobe.com/air/application/3.1">
 	<id>com.imrahil.bbapps.PlaybookTwitFavorites</id>
 	<filename>PlaybookTwitFavorites</filename>
-	<name>Playbook Twitter Favorites</name>
-	<versionNumber>0.1</versionNumber>
+	<name>Twitter Favorites</name>
+	<versionNumber>0.1.0</versionNumber>
     <copyright>Copyright © 2012 Jarek Szczepanski</copyright>
 
 		         
