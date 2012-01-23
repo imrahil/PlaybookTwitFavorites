@@ -20,6 +20,7 @@
     </fx:Script>
 
     <s:actionContent>
+        <s:Button id="refreshBtn" label="Refresh" click="(FlexGlobals.topLevelApplication as PlaybookTwitFavorites).getFavorites()" />
         <s:Button id="logoutBtn" label="Logout" click="logoutBtn.enabled = false; (FlexGlobals.topLevelApplication as PlaybookTwitFavorites).logoutClickHandler()" />
     </s:actionContent>
 

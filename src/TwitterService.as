@@ -1,6 +1,6 @@
 package
 {
-    import com.destroytoday.net.XMLLoader;
+    import com.destroytoday.net.GenericLoader;
     import com.destroytoday.twitteraspirin.TwitterAspirin;
     import com.destroytoday.twitteraspirin.constants.TwitterURL;
     import com.destroytoday.twitteraspirin.vo.OAuthTokenVO;
@@ -139,7 +139,7 @@ package
             urlLoader.removeEventListener(Event.COMPLETE, onGetAuthTokenComplete);
             urlLoader.addEventListener(Event.COMPLETE, onGetAccessTokenComplete);
 
-            var oauthRequest:OAuthRequest = new OAuthRequest(URLRequestMethod.GET, TwitterURL.OAUTH_ACCESS_TOKEN, null, consumer, authToken);
+            var oauthRequest:OAuthRequest = new OAuthRequest(URLRequestMethod.GET, TwitterURL.OAUTH_ACCESS_TOKEN, {oauth_verifier: code}, consumer, authToken);
 
             var url:String = oauthRequest.buildRequest(signatureMethod, OAuthRequest.RESULT_TYPE_URL_STRING, "");
 
@@ -175,11 +175,11 @@ package
 
         /**
          *
-         * @param loader - the XMLLoader that received the status message
+         * @param loader - the GenericLoader that received the status message
          * @param status - the status message itself
          *
          */
-        private function onUpdatedStatus(loader:XMLLoader, status:StatusVO):void
+        private function onUpdatedStatus(loader:GenericLoader, status:StatusVO):void
         {
             tweetSucces.dispatch(status);
         }
@@ -333,7 +333,7 @@ package
             this.twitterAspirin.getFavoritesTimeline(this.reqVO);
         }
 
-        private function onGotFavorites(loader:XMLLoader, favoritesTimeline:Vector.<StatusVO>):void
+        private function onGotFavorites(loader:GenericLoader, favoritesTimeline:Vector.<StatusVO>):void
         {
             favoritesTweets.dispatch(favoritesTimeline);
 

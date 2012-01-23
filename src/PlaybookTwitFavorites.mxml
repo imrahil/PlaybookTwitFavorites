@@ -61,39 +61,60 @@
 
         public function initStageView():void
         {
+            trace('initStageView');
             navigator.pushView(BrowserView, twitterService.loginURL);
         }
 
         public function authorizeAccessToken(pin:String):void
         {
+            trace('authorizeAccessToken');
             twitterService.getAccessToken(pin);
         }
 
         private function onAccessTokenReceived():void
         {
+            trace('onAccessTokenReceived');
             verifyAccessToken();
         }
 
         private function verifyAccessToken():void
         {
+            trace('verifyAccessToken');
             twitterService.verifyOAuthAccessToken();
         }
 
         private function onVerifyOAuthAccessTokenSuccess(user:UserVO):void
         {
+            trace('onVerifyOAuthAccessTokenSuccess');
             var so:SharedObject = SharedObject.getLocal("playbookTwitFavorites");
             so.data["accessToken"] = twitterService.reqVO;
             so.flush();
 
+            getFavorites();
+        }
+
+        public function getFavorites():void
+        {
             twitterService.getFavorites();
         }
 
         private function onFavoritesTweets(favoritesTimeline:Vector.<StatusVO>):void
         {
+            trace('onFavoritesTweets');
             navigator.popAll();
+
+            twitterService.favoritesTweets.removeAll();
+            twitterService.favoritesTweets.add(onRefreshFavorites);
 
             var favorites:VectorListCollection = new VectorListCollection(favoritesTimeline);
             navigator.pushView(FavoritesView, favorites);
+        }
+
+        private function onRefreshFavorites(favoritesTimeline:Vector.<StatusVO>):void
+        {
+            trace('onRefreshFavorites');
+
+            (navigator.activeView as FavoritesView).data = new VectorListCollection(favoritesTimeline);
         }
 
         public function logoutClickHandler():void
@@ -102,7 +123,7 @@
             var so:SharedObject = SharedObject.getLocal("playbookTwitFavorites");
             so.data["accessToken"] = null;
             so.flush();
-            
+
             navigator.popAll();
 
             initTwitterService();
