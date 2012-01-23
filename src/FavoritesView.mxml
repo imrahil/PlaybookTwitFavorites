@@ -3,9 +3,13 @@
 
     <fx:Script>
         <![CDATA[
+        import com.destroytoday.twitteraspirin.vo.StatusVO;
+
         import mx.core.FlexGlobals;
 
         import net.digitalprimates.collections.VectorListCollection;
+
+        import spark.events.IndexChangeEvent;
 
         [Bindable]
         private var favorites:VectorListCollection;
@@ -16,13 +20,33 @@
 
             favorites = value as VectorListCollection;
         }
+
+        private function favoritesList_changeHandler(event:MouseEvent):void
+        {
+            var statusVO:StatusVO = (event.currentTarget as List).selectedItem as StatusVO;
+            var statusText:String = statusVO.text.replace(/((https?|ftp|telnet|file):((\/\/)|(\\\\))+[\w\d:#@%\/;$()~_?\+-=\\\.&]*)/g, "<u><a href=\"event:$1\">$1</a></u>");
+
+            var user:String = statusVO.user.name + "(@" + statusVO.user.screenName + ")";
+            var statusPopup:SkinnableAlert = SkinnableAlert.show(statusText, user, SkinnableAlert.OK);
+            statusPopup.addEventListener(TextEvent.LINK, onLinkClick);
+        }
+
+        private function onLinkClick(event:TextEvent):void
+        {
+            if (event.text != "")
+                navigateToURL(new URLRequest(event.text));
+        }
         ]]>
     </fx:Script>
 
     <s:actionContent>
-        <s:Button id="refreshBtn" label="Refresh" click="(FlexGlobals.topLevelApplication as PlaybookTwitFavorites).getFavorites()" />
-        <s:Button id="logoutBtn" label="Logout" click="logoutBtn.enabled = false; (FlexGlobals.topLevelApplication as PlaybookTwitFavorites).logoutClickHandler()" />
+        <s:Button id="refreshBtn" label="Refresh"
+                  click="(FlexGlobals.topLevelApplication as PlaybookTwitFavorites).getFavorites()"/>
+        <s:Button id="logoutBtn" label="Logout"
+                  click="logoutBtn.enabled = false; (FlexGlobals.topLevelApplication as PlaybookTwitFavorites).logoutClickHandler()"/>
     </s:actionContent>
 
-    <s:List id="favoritesList" width="100%" height="100%" labelField="text" dataProvider="{favorites}" />
+    <s:List id="favoritesList" width="100%" height="100%" labelField="text" dataProvider="{favorites}"
+            itemRenderer="spark.components.LabelItemRenderer" fontSize="20"
+            click="favoritesList_changeHandler(event)"/>
 </s:View>

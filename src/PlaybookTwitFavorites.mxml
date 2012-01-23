@@ -132,4 +132,27 @@
         ]]>
     </fx:Script>
 
+    <fx:Style>
+        @namespace s "library://ns.adobe.com/flex/spark";
+        @namespace controls "*";
+
+        controls|SkinnableAlert {
+            skinClass: ClassReference("SkinnableAlertSkin");
+            backgroundColor: #424242;
+            backgroundAlpha: 0.9;
+        }
+
+        controls|SkinnableAlert s|Button {
+            fontSize: 24;
+        }
+
+        controls|SkinnableAlert s|TextArea {
+            contentBackgroundAlpha: 0;
+        }
+
+        .popupText {
+            color: #FFFFFF;
+            fontSize: 24;
+        }
+    </fx:Style>
 </s:ViewNavigatorApplication>
