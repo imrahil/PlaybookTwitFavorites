@@ -588,6 +588,5 @@ package
                 event.preventDefault();
             }
         }
-
     }
 }

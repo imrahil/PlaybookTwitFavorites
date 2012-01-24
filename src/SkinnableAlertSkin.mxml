@@ -128,7 +128,7 @@ along with Eskimo.  If not, see <http://www.gnu.org/licenses/>.
         <!--- Text display skin part.
      @see SkinnableAlert#textDisplay
         -->
-        <s:TextArea id="textDisplay" width="100%" height="130" styleName="popupText" borderVisible="false" skinClass="spark.skins.mobile.TextAreaSkin"/>
+        <s:TextArea id="textDisplay" width="100%" height="130" selectable="false" styleName="popupText" borderVisible="false" skinClass="spark.skins.mobile.TextAreaSkin"/>
 
         <!--- controlBarGroup skin part.
      @see SkinnableAlert#controlBarGroup

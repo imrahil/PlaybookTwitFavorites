@@ -24,7 +24,7 @@
         private function favoritesList_changeHandler(event:MouseEvent):void
         {
             var statusVO:StatusVO = (event.currentTarget as List).selectedItem as StatusVO;
-            var statusText:String = statusVO.text.replace(/((https?|ftp|telnet|file):((\/\/)|(\\\\))+[\w\d:#@%\/;$()~_?\+-=\\\.&]*)/g, "<u><a href=\"event:$1\">$1</a></u>");
+            var statusText:String = statusVO.text.replace(/((https?|ftp|telnet|file):((\/\/)|(\\\\))+[\w\d:#@%\/;$()~_?\+-=\\\.&]*)/g, "<a href=\"event:$1\"><u>$1</u></a>");
 
             var user:String = statusVO.user.name + "(@" + statusVO.user.screenName + ")";
             var statusPopup:SkinnableAlert = SkinnableAlert.show(statusText, user, SkinnableAlert.OK);
@@ -47,6 +47,6 @@
     </s:actionContent>
 
     <s:List id="favoritesList" width="100%" height="100%" labelField="text" dataProvider="{favorites}"
-            itemRenderer="spark.components.LabelItemRenderer" fontSize="20"
+            itemRenderer="MultilineLabelItemRenderer" fontSize="24"
             click="favoritesList_changeHandler(event)"/>
 </s:View>
