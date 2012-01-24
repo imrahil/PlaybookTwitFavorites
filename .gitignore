@@ -1,7 +1,7 @@
 
 /bin-debug
-/.idea
 /PlaybookTwitFavorites.iml
 /1.compile.bat
 /2.package_deploy.bat
 /debugtoken_imrahil.bar
+/.idea
