@@ -22,7 +22,7 @@ along with Eskimo.  If not, see <http://www.gnu.org/licenses/>.
 
 <!--- The android skin class for the Eskimo SkinnableAlert component.
 
- @see SkinnableAlert
+ @see com.imrahil.mobile.twitfav.components.SkinnableAlert
 
 -->
 
@@ -35,7 +35,7 @@ along with Eskimo.  If not, see <http://www.gnu.org/licenses/>.
         /**
          * @copy spark.skins.spark.ApplicationSkin#hostComponent
          */
-        [HostComponent("SkinnableAlert")]
+        [HostComponent("com.imrahil.mobile.twitfav.components.SkinnableAlert")]
         ]]>
     </fx:Metadata>
 
@@ -119,19 +119,19 @@ along with Eskimo.  If not, see <http://www.gnu.org/licenses/>.
         </s:layout>
 
         <!--- Title display skin part.
-     @see SkinnableAlert#titleDisplay
+     @see com.imrahil.mobile.twitfav.components.SkinnableAlert#titleDisplay
         -->
         <s:Label id="titleDisplay" maxDisplayedLines="1" color="#FFFFFF" left="10"
-                 right="10" minHeight="30" fontSize="20" verticalAlign="middle"
+                 right="10" minHeight="30" fontSize="26" verticalAlign="middle"
                  textAlign="center" fontWeight="bold"/>
 
         <!--- Text display skin part.
-     @see SkinnableAlert#textDisplay
+     @see com.imrahil.mobile.twitfav.components.SkinnableAlert#textDisplay
         -->
-        <s:TextArea id="textDisplay" width="100%" height="130" selectable="false" styleName="popupText" borderVisible="false" skinClass="spark.skins.mobile.TextAreaSkin"/>
+        <s:TextArea id="textDisplay" width="100%" height="130" selectable="false" color="#FFFFFF" fontSize="28" borderVisible="false" skinClass="spark.skins.mobile.TextAreaSkin" />
 
         <!--- controlBarGroup skin part.
-     @see SkinnableAlert#controlBarGroup
+     @see com.imrahil.mobile.twitfav.components.SkinnableAlert#controlBarGroup
         -->
         <s:Group id="controlBarGroup" width="100%">
             <s:layout>

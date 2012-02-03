@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Eskimo.  If not, see <http://www.gnu.org/licenses/>.
  */
-package
+package com.imrahil.mobile.twitfav.components
 {
     import flash.display.Sprite;
     import flash.events.Event;
@@ -24,7 +24,10 @@ package
     import flash.events.StageOrientationEvent;
     import flash.events.TextEvent;
     import flash.system.Capabilities;
+    import flash.text.StyleSheet;
     import flash.ui.Keyboard;
+
+    import flashx.textLayout.conversion.TextConverter;
 
     import mx.core.FlexGlobals;
     import mx.core.IFlexDisplayObject;
@@ -38,7 +41,6 @@ package
     import spark.components.Label;
     import spark.components.TextArea;
     import spark.components.supportClasses.SkinnableComponent;
-    import spark.components.supportClasses.StyleableTextField;
     import spark.components.supportClasses.StyleableTextField;
 
     /**
@@ -293,6 +295,13 @@ package
             {
                 textDisplay.addEventListener(TextEvent.LINK, onLinkClick);
                 StyleableTextField(textDisplay.textDisplay).htmlText = _text;
+
+                callLater(function():void
+                {
+                    var myStyleSheet:StyleSheet = new StyleSheet();
+                    myStyleSheet.parseCSS("a {color: #b7c0e1; text-decoration: underline;}");
+                    StyleableTextField(textDisplay.textDisplay).styleSheet = myStyleSheet;
+                });
             }
         }
 

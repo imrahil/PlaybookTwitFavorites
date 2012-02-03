@@ -1,4 +1,4 @@
-package
+package com.imrahil.mobile.twitfav.components
 {
     import mx.core.DPIClassification;
     import mx.core.mx_internal;
@@ -146,6 +146,5 @@ package
             var labelY:Number = Math.round(vAlign * (viewHeight - oldPreferredLabelHeight)) + paddingTop;
             setElementPosition(labelDisplay, paddingLeft, labelY);
         }
-
     }
 }

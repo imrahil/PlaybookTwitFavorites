@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
                             splashScreenImage="@Embed('PlaybookTwitFavorites-splash.png')"
-                            creationComplete="creationCompleteHandler(event)">
+                            creationComplete="creationCompleteHandler(event)" title="Initializing...">
 
 
     <fx:Script>
@@ -9,6 +9,9 @@
         import com.destroytoday.twitteraspirin.vo.OAuthTokenVO;
         import com.destroytoday.twitteraspirin.vo.StatusVO;
         import com.destroytoday.twitteraspirin.vo.UserVO;
+        import com.imrahil.mobile.twitfav.services.TwitterService;
+        import com.imrahil.mobile.twitfav.views.BrowserView;
+        import com.imrahil.mobile.twitfav.views.FavoritesView;
 
         import mx.events.FlexEvent;
 
@@ -134,25 +137,28 @@
 
     <fx:Style>
         @namespace s "library://ns.adobe.com/flex/spark";
-        @namespace controls "*";
+        @namespace controls "com.imrahil.mobile.twitfav.components.*";
 
-        controls|SkinnableAlert {
-            skinClass: ClassReference("SkinnableAlertSkin");
-            backgroundColor: #424242;
-            backgroundAlpha: 0.9;
+        s|ActionBar {
+            fontSize: 26;
+        }
+        s|ActionBar #titleDisplay
+        {
+            fontSize: 26;
         }
 
-        controls|SkinnableAlert s|Button {
-            fontSize: 24;
+        controls|SkinnableAlert {
+            skinClass: ClassReference("com.imrahil.mobile.twitfav.components.SkinnableAlertSkin");
+            backgroundColor: #424242;
+            backgroundAlpha: 0.9;
         }
 
         controls|SkinnableAlert s|TextArea {
             contentBackgroundAlpha: 0;
         }
 
-        .popupText {
-            color: #FFFFFF;
-            fontSize: 24;
+        controls|SkinnableAlert s|Button {
+            fontSize: 28;
         }
     </fx:Style>
 </s:ViewNavigatorApplication>

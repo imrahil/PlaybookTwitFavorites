@@ -1,4 +1,4 @@
-package
+package com.imrahil.mobile.twitfav.services
 {
     import com.destroytoday.net.GenericLoader;
     import com.destroytoday.twitteraspirin.TwitterAspirin;
