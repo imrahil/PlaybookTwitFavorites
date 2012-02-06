@@ -23,11 +23,15 @@
         private function favoritesList_changeHandler(event:MouseEvent):void
         {
             var statusVO:StatusVO = (event.currentTarget as List).selectedItem as StatusVO;
-            var statusText:String = statusVO.text.replace(/((https?|ftp|telnet|file):((\/\/)|(\\\\))+[\w\d:#@%\/;$()~_?\+-=\\\.&]*)/g, "<a href=\"event:$1\">$1</a>");
 
-            var user:String = statusVO.user.name + "(@" + statusVO.user.screenName + ")";
-            var statusPopup:SkinnableAlert = SkinnableAlert.show(statusText, user, SkinnableAlert.OK);
-            statusPopup.addEventListener(TextEvent.LINK, onLinkClick);
+            if (statusVO)
+            {
+                var statusText:String = statusVO.text.replace(/((https?|ftp|telnet|file):((\/\/)|(\\\\))+[\w\d:#@%\/;$()~_?\+-=\\\.&]*)/g, "<a href=\"event:$1\">$1</a>");
+
+                var user:String = statusVO.user.name + "(@" + statusVO.user.screenName + ")";
+                var statusPopup:SkinnableAlert = SkinnableAlert.show(statusText, user, SkinnableAlert.OK);
+                statusPopup.addEventListener(TextEvent.LINK, onLinkClick);
+            }
         }
 
         private function onLinkClick(event:TextEvent):void

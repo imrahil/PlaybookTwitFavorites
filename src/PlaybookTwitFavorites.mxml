@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:ViewNavigatorApplication xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark"
-                            splashScreenImage="@Embed('PlaybookTwitFavorites-splash.png')"
-                            creationComplete="creationCompleteHandler(event)" title="Initializing...">
-
+                            splashScreenImage="@Embed('PlaybookTwitFavorites-splash.png')" title="Initializing..."
+                            creationComplete="checkSO()">
 
     <fx:Script>
         <![CDATA[
@@ -12,6 +11,7 @@
         import com.imrahil.mobile.twitfav.services.TwitterService;
         import com.imrahil.mobile.twitfav.views.BrowserView;
         import com.imrahil.mobile.twitfav.views.FavoritesView;
+        import com.imrahil.mobile.twitfav.views.StartView;
 
         import mx.events.FlexEvent;
 
@@ -19,9 +19,29 @@
 
         private var twitterService:TwitterService;
 
-        protected function creationCompleteHandler(event:FlexEvent):void
+        public function startService():void
+        {
+            twitterService.start();
+        }
+
+        private function checkSO():void
         {
             initTwitterService();
+
+            var so:SharedObject = SharedObject.getLocal("playbookTwitFavorites");
+
+            var token:Object = so.data["accessToken"];
+
+            if (token != null)
+            {
+                // user has already an AccessToken
+                twitterService.reqVO = new OAuthTokenVO(token.key, token.secret);
+                verifyAccessToken();
+            }
+            else
+            {
+                navigator.pushView(StartView);
+            }
         }
 
         private function initTwitterService():void
@@ -35,27 +55,11 @@
             twitterService.failure.add(onTwitterError);
             twitterService.loginURLReady.add(initStageView);
             twitterService.accessTokenReceived.add(onAccessTokenReceived);
+            twitterService.accessTokenFailed.add(onAccessTokenFailed);
             twitterService.verifyOAuthAccessTokenSuccess.add(onVerifyOAuthAccessTokenSuccess);
             twitterService.favoritesTweets.add(onFavoritesTweets);
 
             twitterService.init();
-
-            var so:SharedObject = SharedObject.getLocal("playbookTwitFavorites");
-
-            var token:Object = so.data["accessToken"];
-
-            // user has already an AccessToken
-            if (token != null)
-            {
-                twitterService.reqVO = new OAuthTokenVO(token.key, token.secret);
-                verifyAccessToken();
-
-                // user is not authenticated yet
-            }
-            else
-            {
-                twitterService.start();
-            }
         }
 
         private function onTwitterError(errMessage:*):void
@@ -79,6 +83,15 @@
         {
             trace('onAccessTokenReceived');
             verifyAccessToken();
+        }
+
+        private function onAccessTokenFailed():void
+        {
+            trace('onAccessTokenFailed');
+            navigator.popView();
+
+            initTwitterService();
+            startService();
         }
 
         private function verifyAccessToken():void
@@ -129,6 +142,7 @@
             so.flush();
 
             navigator.popAll();
+            navigator.pushView(StartView);
 
             initTwitterService();
         }

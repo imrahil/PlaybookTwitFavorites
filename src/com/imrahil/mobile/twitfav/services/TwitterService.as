@@ -64,6 +64,7 @@ package com.imrahil.mobile.twitfav.services
          **/
         public var loginURLReady:Signal = new Signal();
         public var accessTokenReceived:Signal = new Signal();
+        public var accessTokenFailed:Signal = new Signal();
         public var failure:Signal = new Signal();
         public var tweetSucces:Signal = new Signal();
         public var updatedStatus:Signal = new Signal();
@@ -265,28 +266,36 @@ package com.imrahil.mobile.twitfav.services
             trace("TwitterService::onGetAccessTokenComplete, data: " + urlLoader.data);
 
             var result:String = urlLoader.data as String;
-            var aResult:Array = result.split("&");
-            var split:Array;
-            var oResult:Object = new Object();
-            for each(var item:String in aResult)
+
+            if (result != "" && result != " " && result.indexOf('<?xml') == -1)
             {
-                split = item.split("=");
-                oResult[split[0]] = split[1];
+                var aResult:Array = result.split("&");
+                var split:Array;
+                var oResult:Object = new Object();
+                for each(var item:String in aResult)
+                {
+                    split = item.split("=");
+                    oResult[split[0]] = split[1];
+                }
+
+                this.authToken = new OAuthToken(oResult.oauth_token, oResult.oauth_token_secret);
+
+                if (reqVO == null)
+                {
+                    reqVO = new OAuthTokenVO();
+                    reqVO.key = this.authToken.key;
+                    reqVO.secret = this.authToken.secret;
+                }
+
+                this.userID = parseInt(oResult.user_id);
+                this.screenName = oResult.screen_name;
+
+                this.accessTokenReceived.dispatch();
             }
-
-            this.authToken = new OAuthToken(oResult.oauth_token, oResult.oauth_token_secret);
-
-            if (reqVO == null)
+            else
             {
-                reqVO = new OAuthTokenVO();
-                reqVO.key = this.authToken.key;
-                reqVO.secret = this.authToken.secret;
+                this.accessTokenFailed.dispatch();
             }
-
-            this.userID = parseInt(oResult.user_id);
-            this.screenName = oResult.screen_name;
-
-            this.accessTokenReceived.dispatch();
         }
 
         /**
