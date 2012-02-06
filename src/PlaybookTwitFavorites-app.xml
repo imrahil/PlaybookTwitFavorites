@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <application xmlns="http://ns.adobe.com/air/application/3.1">
-	<id>com.imrahil.bbapps.PlaybookTwitFavorites</id>
-	<filename>PlaybookTwitFavorites</filename>
-	<name>Twitter Favorites</name>
-	<versionNumber>0.2.0</versionNumber>
+    <id>com.imrahil.bbapps.TwitFav</id>
+    <filename>PlaybookTwitFavorites</filename>
+    <name>Twitter Favorites</name>
+    <versionNumber>0.3.0</versionNumber>
     <copyright>Copyright © 2012 Jarek Szczepanski</copyright>
 
-		         
     <initialWindow>
         <content>PlaybookTwitFavorites.swf</content>
         <aspectRatio>landscape</aspectRatio>
