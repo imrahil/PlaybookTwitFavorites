@@ -93,21 +93,13 @@ package com.imrahil.mobile.twitfav.components
     public class SkinnableAlert extends SkinnableComponent
     {
         /**
-         *  Value that enables a Yes button on the Alert control
-         */
-        public static const YES:uint = 0x0001;
-        /**
-         *  Value that enables a No button on the Alert control
-         */
-        public static const NO:uint = 0x0002;
-        /**
          *  Value that enables a OK button on the Alert control
          */
         public static const OK:uint = 0x0004;
         /**
          *  Value that enables a Cancel button on the Alert control
          */
-        public static const CANCEL:uint = 0x0008;
+        public static const UNFAV:uint = 0x0008;
         /**
          *  Value that remove modal background
          */
@@ -159,15 +151,7 @@ package com.imrahil.mobile.twitfav.components
         /**
          * @private
          */
-        protected var buttonCANCEL:Button = new Button();
-        /**
-         * @private
-         */
-        protected var buttonYES:Button = new Button();
-        /**
-         * @private
-         */
-        protected var buttonNO:Button = new Button();
+        protected var buttonUnfav:Button = new Button();
 
 
         /**
@@ -177,15 +161,7 @@ package com.imrahil.mobile.twitfav.components
         /**
          * @private
          */
-        protected static var _cancelLabel:String = "Cancel";
-        /**
-         * @private
-         */
-        protected static var _yesLabel:String = "Yes";
-        /**
-         * @private
-         */
-        protected static var _noLabel:String = "No";
+        protected static var _unFavLabel:String = "Unfav";
         /**
          * @private
          */
@@ -202,29 +178,19 @@ package com.imrahil.mobile.twitfav.components
         public function SkinnableAlert()
         {
             buttonOK = new Button();
-            buttonCANCEL = new Button();
-            buttonYES = new Button();
-            buttonNO = new Button();
+            buttonUnfav = new Button();
 
             buttonOK.addEventListener(MouseEvent.CLICK, onOKClick);
-            buttonCANCEL.addEventListener(MouseEvent.CLICK, onCancelClick);
-            buttonYES.addEventListener(MouseEvent.CLICK, onYesClick);
-            buttonNO.addEventListener(MouseEvent.CLICK, onNoClick);
+            buttonUnfav.addEventListener(MouseEvent.CLICK, onUnfavClick);
 
             buttonOK.percentWidth = 100;
-            buttonCANCEL.percentWidth = 100;
-            buttonYES.percentWidth = 100;
-            buttonNO.percentWidth = 100;
+            buttonUnfav.percentWidth = 100;
 
             buttonOK.percentHeight = 100;
-            buttonCANCEL.percentHeight = 100;
-            buttonYES.percentHeight = 100;
-            buttonNO.percentHeight = 100;
+            buttonUnfav.percentHeight = 100;
 
             buttonOK.label = _okLabel;
-            buttonCANCEL.label = _cancelLabel;
-            buttonYES.label = _yesLabel;
-            buttonNO.label = _noLabel;
+            buttonUnfav.label = _unFavLabel;
 
             addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
             addEventListener(Event.REMOVED_FROM_STAGE, removeFromStage, false, 0, true);
@@ -274,17 +240,9 @@ package com.imrahil.mobile.twitfav.components
                 {
                     controlBarGroup.addElementAt(buttonOK, isIOS ? 0 : controlBarGroup.numChildren);
                 }
-                if (buttonFlags & SkinnableAlert.YES)
+                if (buttonFlags & SkinnableAlert.UNFAV)
                 {
-                    controlBarGroup.addElementAt(buttonYES, isIOS ? 0 : controlBarGroup.numChildren);
-                }
-                if (buttonFlags & SkinnableAlert.NO)
-                {
-                    controlBarGroup.addElementAt(buttonNO, isIOS ? 0 : controlBarGroup.numChildren);
-                }
-                if (buttonFlags & SkinnableAlert.CANCEL)
-                {
-                    controlBarGroup.addElementAt(buttonCANCEL, isIOS ? 0 : controlBarGroup.numChildren);
+                    controlBarGroup.addElementAt(buttonUnfav, isIOS ? 0 : controlBarGroup.numChildren);
                 }
             }
             if (instance == titleDisplay)
@@ -325,26 +283,16 @@ package com.imrahil.mobile.twitfav.components
                     {
                         controlBarGroup.addElementAt(buttonOK, isIOS ? 0 : controlBarGroup.numChildren);
                     }
-                    if (buttonFlags & SkinnableAlert.YES)
+                    if (buttonFlags & SkinnableAlert.UNFAV)
                     {
-                        controlBarGroup.addElementAt(buttonYES, isIOS ? 0 : controlBarGroup.numChildren);
-                    }
-                    if (buttonFlags & SkinnableAlert.NO)
-                    {
-                        controlBarGroup.addElementAt(buttonNO, isIOS ? 0 : controlBarGroup.numChildren);
-                    }
-                    if (buttonFlags & SkinnableAlert.CANCEL)
-                    {
-                        controlBarGroup.addElementAt(buttonCANCEL, isIOS ? 0 : controlBarGroup.numChildren);
+                        controlBarGroup.addElementAt(buttonUnfav, isIOS ? 0 : controlBarGroup.numChildren);
                     }
                 }
 
                 buttonFlagsChanged = false;
 
                 buttonOK.styleName = getStyle("okButtonStyleName");
-                buttonCANCEL.styleName = getStyle("cancelButtonStyleName");
-                buttonYES.styleName = getStyle("yesButtonStyleName");
-                buttonNO.styleName = getStyle("noButtonStyleName");
+                buttonUnfav.styleName = getStyle("noButtonStyleName");
             }
 
             PopUpManager.centerPopUp(this);
@@ -395,7 +343,7 @@ package com.imrahil.mobile.twitfav.components
 
             var alert:SkinnableAlert = new SkinnableAlert();
 
-            if (flags & SkinnableAlert.OK || flags & SkinnableAlert.CANCEL || flags & SkinnableAlert.YES || flags & SkinnableAlert.NO)
+            if (flags & SkinnableAlert.OK || flags & SkinnableAlert.UNFAV)
             {
                 alert.buttonFlags = flags;
             }
@@ -473,51 +421,19 @@ package com.imrahil.mobile.twitfav.components
         }
 
         /**
-         * Label of the CANCEL button
-         */
-        public static function get cancelLabel():String
-        {
-            return _cancelLabel;
-        }
-
-        /**
-         * @private
-         */
-        public static function set cancelLabel(value:String):void
-        {
-            _cancelLabel = value;
-        }
-
-        /**
-         * Label of the YES button
-         */
-        public static function get yesLabel():String
-        {
-            return _yesLabel;
-        }
-
-        /**
-         * @private
-         */
-        public static function set yesLabel(value:String):void
-        {
-            _yesLabel = value;
-        }
-
-        /**
          * Label of the NO button
          */
-        public static function get noLabel():String
+        public static function get unFavLabel():String
         {
-            return _noLabel;
+            return _unFavLabel;
         }
 
         /**
          * @private
          */
-        public static function set noLabel(value:String):void
+        public static function set unFavLabel(value:String):void
         {
-            _noLabel = value;
+            _unFavLabel = value;
         }
 
         /**
@@ -548,27 +464,9 @@ package com.imrahil.mobile.twitfav.components
         /**
          * @private
          */
-        protected function onCancelClick(event:MouseEvent):void
+        protected function onUnfavClick(event:MouseEvent):void
         {
-            dispatchEvent(new CloseEvent(CloseEvent.CLOSE, false, false, SkinnableAlert.CANCEL));
-            PopUpManager.removePopUp(this);
-        }
-
-        /**
-         * @private
-         */
-        protected function onYesClick(event:MouseEvent):void
-        {
-            dispatchEvent(new CloseEvent(CloseEvent.CLOSE, false, false, SkinnableAlert.YES));
-            PopUpManager.removePopUp(this);
-        }
-
-        /**
-         * @private
-         */
-        protected function onNoClick(event:MouseEvent):void
-        {
-            dispatchEvent(new CloseEvent(CloseEvent.CLOSE, false, false, SkinnableAlert.NO));
+            dispatchEvent(new CloseEvent(CloseEvent.CLOSE, false, false, SkinnableAlert.UNFAV));
             PopUpManager.removePopUp(this);
         }
 

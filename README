@@ -1,5 +1,6 @@
-Twitter Favorites for Blackberry Playbook - 0.1.0
+Twitter Favorites for Blackberry Playbook - 0.4.0
 Simple Adobe Flex app to browse your favorites from Twitter and check URLs in awesome Playbook browser.
+You can also unfavorite particular tweets.
 
 Requirements:
 - as3-signals - https://github.com/robertpenner/as3-signals

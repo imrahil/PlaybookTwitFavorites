@@ -3,7 +3,7 @@
     <id>com.imrahil.bbapps.TwitFav</id>
     <filename>PlaybookTwitFavorites</filename>
     <name>Twitter Favorites</name>
-    <versionNumber>0.3.0</versionNumber>
+    <versionNumber>0.4.0</versionNumber>
     <copyright>Copyright © 2012 Jarek Szczepanski</copyright>
 
     <initialWindow>

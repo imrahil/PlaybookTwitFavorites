@@ -7,6 +7,7 @@
         import com.imrahil.mobile.twitfav.components.SkinnableAlert;
 
         import mx.core.FlexGlobals;
+        import mx.events.CloseEvent;
 
         import net.digitalprimates.collections.VectorListCollection;
 
@@ -18,6 +19,11 @@
             super.data = value;
 
             favorites = value as VectorListCollection;
+
+            if (busyInd)
+            {
+                busyInd.visible = false;
+            }
         }
 
         private function favoritesList_changeHandler(event:MouseEvent):void
@@ -29,8 +35,19 @@
                 var statusText:String = statusVO.text.replace(/((https?|ftp|telnet|file):((\/\/)|(\\\\))+[\w\d:#@%\/;$()~_?\+-=\\\.&]*)/g, "<a href=\"event:$1\">$1</a>");
 
                 var user:String = statusVO.user.name + "(@" + statusVO.user.screenName + ")";
-                var statusPopup:SkinnableAlert = SkinnableAlert.show(statusText, user, SkinnableAlert.OK);
+                var statusPopup:SkinnableAlert = SkinnableAlert.show(statusText, user, SkinnableAlert.OK|SkinnableAlert.UNFAV);
+                statusPopup.addEventListener(CloseEvent.CLOSE, onCloseEvent);
                 statusPopup.addEventListener(TextEvent.LINK, onLinkClick);
+            }
+        }
+
+        private function onCloseEvent(event:CloseEvent):void
+        {
+            if (event.detail == SkinnableAlert.UNFAV)
+            {
+                busyInd.visible = true;
+
+                (FlexGlobals.topLevelApplication as PlaybookTwitFavorites).unFavoriteTweet(favoritesList.selectedItem as StatusVO);
             }
         }
 
@@ -44,7 +61,7 @@
 
     <s:actionContent>
         <s:Button id="refreshBtn" label="Refresh"
-                  click="(FlexGlobals.topLevelApplication as PlaybookTwitFavorites).getFavorites()"/>
+                  click="busyInd.visible = true; (FlexGlobals.topLevelApplication as PlaybookTwitFavorites).getFavorites()"/>
         <s:Button id="logoutBtn" label="Logout"
                   click="logoutBtn.enabled = false; (FlexGlobals.topLevelApplication as PlaybookTwitFavorites).logoutClickHandler()"/>
     </s:actionContent>
@@ -52,4 +69,9 @@
     <s:List id="favoritesList" width="100%" height="100%" labelField="text" dataProvider="{favorites}"
             itemRenderer="com.imrahil.mobile.twitfav.components.MultilineLabelItemRenderer" fontSize="28"
             click="favoritesList_changeHandler(event)"/>
+
+    <s:HGroup width="100%" height="100%" horizontalAlign="center" verticalAlign="middle" >
+        <s:BusyIndicator id="busyInd" width="40" height="40" />
+    </s:HGroup>
+
 </s:View>

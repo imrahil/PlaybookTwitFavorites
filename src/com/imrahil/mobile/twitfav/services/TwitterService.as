@@ -70,6 +70,7 @@ package com.imrahil.mobile.twitfav.services
         public var updatedStatus:Signal = new Signal();
         public var verifyOAuthAccessTokenSuccess:Signal = new Signal();
         public var favoritesTweets:Signal = new Signal();
+        public var unFavoritedTweet:Signal = new Signal();
 
         // Implements most generic Twitter functionality
         private var twitterAspirin:TwitterAspirin;
@@ -331,7 +332,6 @@ package com.imrahil.mobile.twitfav.services
         private function onVerifiedOAuthAccessToken(user:UserVO):void
         {
             verifyOAuthAccessTokenSuccess.dispatch(user);
-
         }
 
         public function getFavorites():void
@@ -345,7 +345,20 @@ package com.imrahil.mobile.twitfav.services
         private function onGotFavorites(loader:GenericLoader, favoritesTimeline:Vector.<StatusVO>):void
         {
             favoritesTweets.dispatch(favoritesTimeline);
+        }
 
+        public function unFavoriteTweet(status:StatusVO):void
+        {
+            this.twitterAspirin.unFavoritedStatus.removeAll();
+            this.twitterAspirin.unFavoritedStatus.add(onUnfavorites);
+
+            this.twitterAspirin.unFavoriteStatus(this.reqVO, status.id);
+        }
+
+        private function onUnfavorites(loader:GenericLoader, status:StatusVO):void
+        {
+            unFavoritedTweet.dispatch(status);
+//            getFavorites();
         }
     }
 }

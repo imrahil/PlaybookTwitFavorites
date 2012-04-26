@@ -58,6 +58,7 @@
             twitterService.accessTokenFailed.add(onAccessTokenFailed);
             twitterService.verifyOAuthAccessTokenSuccess.add(onVerifyOAuthAccessTokenSuccess);
             twitterService.favoritesTweets.add(onFavoritesTweets);
+            twitterService.unFavoritedTweet.add(onUnfavoritedTweet);
 
             twitterService.init();
         }
@@ -107,6 +108,10 @@
             so.data["accessToken"] = twitterService.reqVO;
             so.flush();
 
+            navigator.popAll();
+
+            navigator.pushView(FavoritesView);
+
             getFavorites();
         }
 
@@ -118,20 +123,33 @@
         private function onFavoritesTweets(favoritesTimeline:Vector.<StatusVO>):void
         {
             trace('onFavoritesTweets');
-            navigator.popAll();
-
-            twitterService.favoritesTweets.removeAll();
-            twitterService.favoritesTweets.add(onRefreshFavorites);
-
-            var favorites:VectorListCollection = new VectorListCollection(favoritesTimeline);
-            navigator.pushView(FavoritesView, favorites);
-        }
-
-        private function onRefreshFavorites(favoritesTimeline:Vector.<StatusVO>):void
-        {
-            trace('onRefreshFavorites');
 
             (navigator.activeView as FavoritesView).data = new VectorListCollection(favoritesTimeline);
+        }
+
+        public function unFavoriteTweet(status:StatusVO):void
+        {
+            trace('unfavoriteTweet');
+
+            twitterService.unFavoriteTweet(status);
+        }
+
+        private function onUnfavoritedTweet(status:StatusVO):void
+        {
+            trace('onUnfavoritesTweet');
+
+            var currentView:FavoritesView = navigator.activeView as FavoritesView;
+            currentView.busyInd.visible = false;
+
+            var collection:VectorListCollection = currentView.data as VectorListCollection;
+            for each (var item:StatusVO in collection)
+            {
+                if (item.id == status.id)
+                {
+                    collection.removeItemAt(collection.getItemIndex(item));
+                    break;
+                }
+            }
         }
 
         public function logoutClickHandler():void
